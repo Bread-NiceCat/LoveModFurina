@@ -20,10 +20,11 @@ allprojects {
     archivesBaseName = "$archives_name-$minecraft_version"
 
     repositories {
-        var aliyun = maven { url = "https://maven.aliyun.com/repository/public" }
-        remove aliyun
-        addFirst aliyun
-
+        if (Locale.getDefault() == Locale.CHINA) {
+            var aliyun = maven { url = "https://maven.aliyun.com/repository/public" }
+            remove aliyun
+            addFirst aliyun
+        }
         maven { url = "https://modmaven.dev" }
         maven { url = 'https://maven.parchmentmc.org' }
     }
