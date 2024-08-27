@@ -1,0 +1,83 @@
+plugins {
+    id 'java'
+    id "org.jetbrains.kotlin.jvm" version '2.0.20'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '2.0.20'
+
+    id 'dev.architectury.loom' version '1.7-SNAPSHOT' apply false
+    id 'architectury-plugin' version '3.4-SNAPSHOT'
+    id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
+}
+
+architectury {
+    minecraft = project.minecraft_version
+}
+allprojects {
+    apply plugin: 'org.jetbrains.kotlin.jvm'
+    apply plugin: 'org.jetbrains.kotlin.plugin.serialization'
+
+    group = rootProject.maven_group
+    version = rootProject.mod_version
+    archivesBaseName = "$archives_name-$minecraft_version"
+
+    repositories {
+        var aliyun = maven { url = "https://maven.aliyun.com/repository/public" }
+        remove aliyun
+        addFirst aliyun
+
+        maven { url = "https://modmaven.dev" }
+        maven { url = 'https://maven.parchmentmc.org' }
+    }
+
+    dependencies {
+        implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    }
+}
+subprojects {
+    apply plugin: 'dev.architectury.loom'
+    apply plugin: 'architectury-plugin'
+    apply plugin: 'maven-publish'
+
+    dependencies {
+        minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
+        mappings loom.layered() {
+            officialMojangMappings()
+            parchment("org.parchmentmc.data:${parchment_version}")
+        }
+    }
+
+    java {
+        withSourcesJar()
+
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        it.options.release = 21
+    }
+
+    // Configure Maven publishing.
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                artifactId = base.archivesName.get()
+                from components.java
+            }
+        }
+    }
+}
+
+//declare repositories
+println("=".repeat(64))
+println("here in project $project.name")
+println("repo here=>")
+getRepositories().forEach { it ->
+    if (it instanceof MavenArtifactRepository) {
+        println it.url
+    } else if (it instanceof FlatDirectoryArtifactRepository) {
+        println it.dirs
+    } else print it
+}
+println("repo end")
+println("=".repeat(64))
+//================================================================//

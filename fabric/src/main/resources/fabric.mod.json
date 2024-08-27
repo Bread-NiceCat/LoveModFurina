@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "lovemod",
+  "version": "${version}",
+  "name": "LoveMod:Furina",
+  "description": "",
+  "authors": [
+    "Bread_NiceCat"
+  ],
+  "contact": {
+    "homepage": ""
+  },
+  "license": "GPL-3.0",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      {
+        "adapter": "kotlin",
+        "value": "cn.breadnicecat.lovemod.fabric.LoveModImpl"
+      }
+    ]
+  },
+  "mixins": [
+    "lovemod.mixins.json"
+  ],
+  "depends": {
+    "architectury": "*",
+    "fabric-api": "*",
+    "fabric-language-kotlin": "*",
+    "minecraft": ">=1.21"
+  }
+}

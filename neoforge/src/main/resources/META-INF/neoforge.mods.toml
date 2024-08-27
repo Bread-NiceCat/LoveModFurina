@@ -1,0 +1,37 @@
+modLoader = "kotlinforforge"
+loaderVersion = "[1,)"
+#issueTrackerURL = ""
+license = "GNU GPL 3.0"
+
+[[mods]]
+modId = "lovemod"
+version = "${version}"
+displayName = "LoveMod:Furina"
+authors = "Bread_NiceCat"
+description = '''
+
+'''
+#logoFile = ""
+
+[[dependencies.lovemod]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.lovemod]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.lovemod]]
+modId = "architectury"
+type = "required"
+ordering = "AFTER"
+side = "BOTH"
+
+[[mixins]]
+config = "lovemod.mixins.json"
