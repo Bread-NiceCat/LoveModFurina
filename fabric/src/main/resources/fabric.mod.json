@@ -13,12 +13,7 @@
   "license": "GPL-3.0",
   "environment": "*",
   "entrypoints": {
-    "main": [
-      {
-        "adapter": "kotlin",
-        "value": "cn.breadnicecat.lovemod.fabric.LoveModImpl"
-      }
-    ]
+    "main": "cn.breadnicecat.lovemod.fabric.LoveModImpl"
   },
   "mixins": [
     "lovemod.mixins.json"
@@ -26,7 +21,6 @@
   "depends": {
     "architectury": "*",
     "fabric-api": "*",
-    "fabric-language-kotlin": "*",
     "minecraft": ">=1.21"
   }
 }

@@ -24,6 +24,7 @@ public class PlayerAddition {
 	
 	public static Optional<UUID> getMate(Player player) {
 		SynchedEntityData data = ((MixinEntity) player).getEntityData();
+		if (data == null) return Optional.empty();
 		return data.get(DATA_MATE);
 	}
 	
