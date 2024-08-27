@@ -1,0 +1,11 @@
+{
+  "item.lovemod.ring_wedding": "结婚戒指",
+  "item.lovemod.ring_engagement": "求婚戒指",
+  "tab.lovemod.title": "结婚：芙宁娜版",
+  "lovemod.marry.desc": "祝贺%s和%s结为夫妻",
+  "lovemod.request.desc": "你愿意和%s结为夫妻吗？用戒指右键%s同意",
+  "lovemod.divorce.desc": "你和%s离婚了",
+  "lovemod.mate_married.desc": "%s已经结婚了.",
+  "lovemod.married.desc": "你已经结婚了.",
+  "lovemod.who_on_it.desc": "上面篆刻着%s的名字."
+}

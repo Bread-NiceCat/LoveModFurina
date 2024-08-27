@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "minecraft:gold_ingot"
+    },
+    "@": {
+      "item": "minecraft:red_dye"
+    }
+  },
+  "pattern": [
+    "#@#",
+    "# #",
+    "###"
+  ],
+  "result": {
+    "item": "lovemod:ring_engagement"
+  },
+  "show_notification": true
+}

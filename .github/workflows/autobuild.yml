@@ -32,11 +32,11 @@ jobs:
         with:
           arguments: build
 
-      - name: upload forge
+      - name: upload neoforge
         uses: actions/upload-artifact@v4
         with:
-          name: forge
-          path: forge/build/libs/lovemod-*[0-9].jar
+          name: neoforge
+          path: neoforge/build/libs/lovemod-*[0-9].jar
           if-no-files-found: error
 
       - name: upload fabric

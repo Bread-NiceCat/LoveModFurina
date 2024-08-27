@@ -1,8 +1,5 @@
 plugins {
     id 'java'
-    id "org.jetbrains.kotlin.jvm" version '2.0.20'
-    id 'org.jetbrains.kotlin.plugin.serialization' version '2.0.20'
-
     id 'dev.architectury.loom' version '1.7-SNAPSHOT' apply false
     id 'architectury-plugin' version '3.4-SNAPSHOT'
     id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
@@ -12,9 +9,6 @@ architectury {
     minecraft = project.minecraft_version
 }
 allprojects {
-    apply plugin: 'org.jetbrains.kotlin.jvm'
-    apply plugin: 'org.jetbrains.kotlin.plugin.serialization'
-
     group = rootProject.maven_group
     version = rootProject.mod_version
     archivesBaseName = "$archives_name-$minecraft_version"
@@ -27,10 +21,6 @@ allprojects {
         }
         maven { url = "https://modmaven.dev" }
         maven { url = 'https://maven.parchmentmc.org' }
-    }
-
-    dependencies {
-        implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     }
 }
 subprojects {
