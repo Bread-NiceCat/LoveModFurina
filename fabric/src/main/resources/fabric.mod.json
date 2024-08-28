@@ -13,7 +13,9 @@
   "license": "GPL-3.0",
   "environment": "*",
   "entrypoints": {
-    "main": "cn.breadnicecat.lovemod.fabric.LoveModImpl"
+    "main": [
+      "cn.breadnicecat.lovemod.fabric.LoveModImpl"
+    ]
   },
   "mixins": [
     "lovemod.mixins.json"

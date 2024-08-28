@@ -1,0 +1,20 @@
+{
+  "item.lovemod.divorce_agreement": "离婚协议书",
+  "item.lovemod.engagement_ring": "求婚戒指",
+  "item.lovemod.wedding_ring": "结婚戒指",
+  "lovemod.agreement_not_suit.desc": "这张离婚协议书不属于你们。",
+  "lovemod.congratulation.desc": "祝贺%s和%s喜结良缘！",
+  "lovemod.divorce_from.desc": "你和%s离婚了。",
+  "lovemod.me_married.desc": "你已经结婚了。",
+  "lovemod.me_request.desc": "你把你的求婚戒指给了%s。",
+  "lovemod.not_from_ta.desc": "这个戒指不是%s赠送的。",
+  "lovemod.not_my_ring.desc": "这不是你的戒指。",
+  "lovemod.player_offline.desc": "%s目前不在线。",
+  "lovemod.rebind_ok.desc": "重新绑定成功。",
+  "lovemod.request.desc": "你愿意和%s结为夫妻吗？用戒指右键%s同意。",
+  "lovemod.ring_mate.desc": "上面篆刻着%s的名字。",
+  "lovemod.ta_married.desc": "%s已经结婚了。",
+  "lovemod.unbind_ring.desc": "这个戒指还没有绑定。",
+  "lovemod.unmarried.desc": "你尚未结婚。",
+  "tab.lovemod.title": "结婚：芙宁娜版"
+}

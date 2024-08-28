@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "lovemod:items/ring_mate"
+    "layer0": "lovemod:item/wedding_ring"
   }
 }

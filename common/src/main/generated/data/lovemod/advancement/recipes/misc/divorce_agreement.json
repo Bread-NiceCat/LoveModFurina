@@ -1,0 +1,25 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "lovemod:divorce_agreement"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "never": {
+      "trigger": "minecraft:entity_hurt_player"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "never"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "lovemod:divorce_agreement"
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "lovemod:wedding_ring"
+    },
+    {
+      "item": "lovemod:engagement_ring"
+    },
+    {
+      "item": "minecraft:paper"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "lovemod:divorce_agreement"
+  }
+}

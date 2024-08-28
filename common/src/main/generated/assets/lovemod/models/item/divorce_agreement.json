@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "lovemod:items/ring_femate"
+    "layer0": "lovemod:item/divorce_agreement"
   }
 }

@@ -10,8 +10,9 @@ import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.Item;
 
-import static cn.breadnicecat.lovemod.Utils.prefix;
-import static com.mojang.text2speech.Narrator.LOGGER;
+import static cn.breadnicecat.lovemod.LoveMod.LOGGER;
+import static cn.breadnicecat.lovemod.utils.Utils.prefix;
+
 
 /**
  * Created in 2024/8/27 11:19
@@ -29,7 +30,7 @@ public class ModItems {
 	
 	public static DeferredRegister<Item> register = DeferredRegister.create(LoveMod.MOD_ID, Registries.ITEM);
 	
-	public static RegistrySupplier<EngagementRing> RING_ENGAGEMENT = register.register(prefix("ring_engagement"), EngagementRing::new);
-	public static DeferredSupplier<WeddingRing> RING_WEDDING = register.register(prefix("ring_wedding"), WeddingRing::new);
+	public static RegistrySupplier<EngagementRing> ENGAGEMENT_RING = register.register(prefix("engagement_ring"), EngagementRing::new);
+	public static DeferredSupplier<WeddingRing> WEDDING_RING = register.register(prefix("wedding_ring"), WeddingRing::new);
 	public static DeferredSupplier<DivorceAgreement> DIVORCE_AGREEMENT = register.register(prefix("divorce_agreement"), DivorceAgreement::new);
 }

@@ -1,7 +1,7 @@
 package cn.breadnicecat.lovemod.item.items;
 
-import cn.breadnicecat.lovemod.mixin_ref.PlayerAddition;
-import net.minecraft.network.chat.Component;
+import cn.breadnicecat.lovemod.PlayerAddition;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -10,6 +10,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import org.jetbrains.annotations.NotNull;
+
+import static net.minecraft.network.chat.Component.translatable;
 
 /**
  * Created in 2024/8/27 16:27
@@ -21,22 +23,35 @@ import org.jetbrains.annotations.NotNull;
  * <p>
  **/
 public class DivorceAgreement extends Item {
-	public static final String divorce = "lovemod.divorce.desc";
+	public static final String divorce = "lovemod.divorce_from.desc";
+	public static final String agreement_not_suit = "lovemod.agreement_not_suit.desc";
 	
 	public DivorceAgreement() {
 		super(new Properties().stacksTo(1).rarity(Rarity.EPIC));
 	}
 	
 	@Override
+	public boolean isFoil(ItemStack stack) {
+		return validate(stack);
+	}
+	
+	public boolean validate(ItemStack agreement) {
+		return true;
+	}
+	
+	public boolean isValidFor(ItemStack agreement, Player p1, Player p2) {
+		if (!validate(agreement)) return false;
+		return true;
+	}
+	
+	@Override
 	public @NotNull InteractionResult interactLivingEntity(ItemStack stack, Player thisPlayer, LivingEntity interactionTarget, InteractionHand usedHand) {
-		if (thisPlayer != null && interactionTarget instanceof Player mate) {
-			if (!thisPlayer.level().isClientSide()) {
-				if (PlayerAddition.getMate(thisPlayer).isPresent() && PlayerAddition.getMate(mate).isPresent()) {
-					PlayerAddition.setMate(thisPlayer, null);
-					PlayerAddition.setMate(mate, null);
-					thisPlayer.sendSystemMessage(Component.translatable(divorce, mate.getName()));
-					mate.sendSystemMessage(Component.translatable(divorce, thisPlayer.getName()));
-				}
+		if (thisPlayer instanceof ServerPlayer && interactionTarget instanceof ServerPlayer ta) {
+			if (PlayerAddition.isCP(thisPlayer, ta)) {
+				PlayerAddition.setMate(thisPlayer, null);
+				PlayerAddition.setMate(ta, null);
+				thisPlayer.sendSystemMessage(translatable(divorce, ta.getName()));
+				ta.sendSystemMessage(translatable(divorce, thisPlayer.getName()));
 			}
 		}
 		return super.interactLivingEntity(stack, thisPlayer, interactionTarget, usedHand);

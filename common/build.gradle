@@ -9,6 +9,9 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:$rootProject.fabric_loader_version"
 
     modImplementation "dev.architectury:architectury:$rootProject.architectury_api_version"
+
+    modCompileOnly("mezz.jei:jei-${rootProject.minecraft_version}-common-api:${rootProject.jei_version}")
+    modRuntimeOnly("mezz.jei:jei-${rootProject.minecraft_version}-common:${rootProject.jei_version}")
 }
 repositories {
     mavenCentral()
@@ -17,7 +20,6 @@ sourceSets {
     main {
         resources {
             srcDirs += ['src/main/generated']
-            exclude('reports/**')
             exclude('.cache/**')
         }
     }

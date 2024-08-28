@@ -1,13 +1,17 @@
 package cn.breadnicecat.lovemod.item.items;
 
+import cn.breadnicecat.lovemod.PlayerAddition;
 import cn.breadnicecat.lovemod.item.ModItemDatas;
-import cn.breadnicecat.lovemod.mixin_ref.PlayerAddition;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.RelativeMovement;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -23,6 +27,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static cn.breadnicecat.lovemod.item.ModItemDatas.*;
+import static net.minecraft.ChatFormatting.*;
+import static net.minecraft.network.chat.Component.literal;
+import static net.minecraft.network.chat.Component.translatable;
+
 /**
  * Created in 2024/8/27 16:39
  * Project: LoveModFurina
@@ -33,11 +42,18 @@ import java.util.UUID;
  * <p>
  **/
 public abstract class CommonRing extends Item {
-	protected static String married = "lovemod.married.desc";
-	protected static String mate_married = "lovemod.mate_married.desc";
-	protected static String request = "lovemod.request.desc";
-	protected static String marry = "lovemod.marry.desc";
-	protected static String who_on_it = "lovemod.who_on_it.desc";
+	public static String me_married = "lovemod.me_married.desc";
+	public static String ta_married = "lovemod.ta_married.desc";
+	public static String request = "lovemod.request.desc";
+	public static String me_request = "lovemod.me_request.desc";
+	public static String congratulation = "lovemod.congratulation.desc";
+	public static String ring_mate = "lovemod.ring_mate.desc";
+	public static String not_my_ring = "lovemod.not_my_ring.desc";
+	public static String unbind_ring = "lovemod.unbind_ring.desc";
+	public static String unmarried = "lovemod.unmarried.desc";
+	public static String player_offline = "lovemod.player_offline.desc";
+	public static String not_from_ta = "lovemod.not_from_ta.desc";
+	public static String rebind_ok = "lovemod.rebind_ok.desc";
 	
 	public CommonRing(Properties properties) {
 		super(properties);
@@ -47,48 +63,119 @@ public abstract class CommonRing extends Item {
 		this(new Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
 	}
 	
+	/**
+	 * 两种戒指都可以传送
+	 */
+	@Override
 	public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
-		if (!level.isClientSide()) {
-			Optional<UUID> mateUUID = PlayerAddition.getMate(player);
-			if (mateUUID.isPresent()) {
-				ItemStack hand = player.getItemInHand(usedHand);
-				Player mate = level.getPlayerByUUID(mateUUID.get());
-				if (mate != null) {
-					float yRotDeg = Mth.wrapDegrees(mate.getYRot());
-					float xRotDeg = Mth.wrapDegrees(mate.getXRot());
-					player.teleportTo((ServerLevel) mate.level(), mate.getX(), mate.getY(), mate.getZ(), EnumSet.noneOf(RelativeMovement.class), yRotDeg, xRotDeg);
-					return InteractionResultHolder.success(hand);
-				}
+		ItemStack stack = player.getItemInHand(usedHand);
+		if (level.isClientSide()) {
+			return InteractionResultHolder.success(stack);
+		}
+		
+		Optional<UUID> ringHolderUUID = getHolderUUID(stack);
+		Optional<UUID> ringMateUUID = getMateUUID(stack);
+		Optional<UUID> mateUUID = PlayerAddition.getMate(player);
+		//戒指上面没保存数据
+		if (!isValidRing(stack)) {
+			//没结婚
+			if (mateUUID.isEmpty()) {
+				player.sendSystemMessage(translatable(unmarried).withStyle(YELLOW));
+				return InteractionResultHolder.fail(stack);
 			}
+			player.sendSystemMessage(translatable(unbind_ring).withStyle(ChatFormatting.YELLOW));
+			return InteractionResultHolder.fail(stack);
+		}
+		//和数据不匹配
+		if (mateUUID.isEmpty()//自己都没结婚哪里来的结婚戒指
+				//戒指上的数据和玩家身上的不匹配
+				|| !player.getUUID().equals(ringHolderUUID.get())
+				|| !mateUUID.get().equals(ringMateUUID.get())) {
+			player.sendSystemMessage(translatable(not_my_ring));
+			return InteractionResultHolder.fail(stack);
+		}
+		Player mate = level.getPlayerByUUID(mateUUID.get());
+		if (mate != null) {
+			//传送
+			float yRotDeg = Mth.wrapDegrees(mate.getYRot());
+			float xRotDeg = Mth.wrapDegrees(mate.getXRot());
+			player.teleportTo((ServerLevel) mate.level(), mate.getX(), mate.getY(), mate.getZ(), EnumSet.noneOf(RelativeMovement.class), yRotDeg, xRotDeg);
+			return InteractionResultHolder.consume(stack);
+		} else {
+			player.sendSystemMessage(translatable(player_offline).withStyle(ChatFormatting.YELLOW));
 		}
 		return super.use(level, player, usedHand);
 	}
 	
 	@Override
 	public @NotNull InteractionResult useOn(UseOnContext context) {
-		return use(context.getLevel(), context.getPlayer(), context.getHand()).getResult();
+		Player player = context.getPlayer();
+		return player == null
+				? InteractionResult.FAIL
+				: use(context.getLevel(), player, context.getHand()).getResult();
 	}
 	
 	@Override
-	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-		super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
-		String targetName = getTargetName(stack);
-		if (targetName != null) tooltipComponents.add(Component.translatable(who_on_it, targetName));
+	@Deprecated
+	public @NotNull InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity interactionTarget, InteractionHand usedHand) {
+		if (player.level().isClientSide()) return InteractionResult.SUCCESS;
+		
+		if (interactionTarget instanceof ServerPlayer ta) {
+			return interactPlayer(stack, (ServerPlayer) player, ta, usedHand);
+		}
+		return super.interactLivingEntity(stack, player, interactionTarget, usedHand);
 	}
 	
-	public static UUID getTarget(ItemStack ring) {
-		String str = ring.get(ModItemDatas.MATE_UUID.get());
-		if (str == null) return null;
-		return UUID.fromString(str);
+	protected InteractionResult interactPlayer(ItemStack stack, ServerPlayer thisPlayer, ServerPlayer ta, InteractionHand hand) {
+		return InteractionResult.PASS;
 	}
 	
-	public static void setTarget(ItemStack ring, Player target) {
-		ring.set(ModItemDatas.MATE_UUID.get(), target.getUUID().toString());
-		ring.set(ModItemDatas.MATE_NAME.get(), target.getName().getString());
+	@Override
+	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tips, TooltipFlag tooltipFlag) {
+		super.appendHoverText(stack, context, tips, tooltipFlag);
+		Minecraft instance = Minecraft.getInstance();
+		if (isValidRing(stack)) {
+			Optional<UUID> mateUUID = getMateUUID(stack);
+			Player mate = instance.level.getPlayerByUUID(mateUUID.get());
+			if (mate != null) {
+				//伴侣在线绿色
+				tips.add(translatable(ring_mate, mate.getName().copy().withStyle(GREEN)).withStyle(AQUA));
+			} else {
+				//伴侣离线红色
+				Optional<String> mateName = getMateName(stack);
+				if (mateName.isPresent()) {
+					mateName.ifPresent(s -> tips.add(translatable(ring_mate, literal(s).withStyle(RED))));
+				}
+			}
+			Optional<UUID> holderUUID = getHolderUUID(stack);
+			if (instance.getGameProfile().getId().equals(holderUUID.get())) {
+				tips.add(translatable(not_my_ring).withStyle(RED));
+			}
+		}
 	}
 	
-	public static String getTargetName(ItemStack ring) {
-		return ring.get(ModItemDatas.MATE_NAME.get());
+	
+	public static Optional<UUID> getMateUUID(ItemStack ring) {
+		return Optional.ofNullable(ring.get(MATE_UUID.get())).map(UUID::fromString);
 	}
 	
+	public static Optional<String> getMateName(ItemStack ring) {
+		return Optional.ofNullable(ring.get(MATE_NAME.get()));
+	}
+	
+	public static Optional<UUID> getHolderUUID(ItemStack ring) {
+		return Optional.ofNullable(ring.get(HOLDER_UUID.get())).map(UUID::fromString);
+	}
+	
+	public static void setRingData(ItemStack ring, Player holder, Player mate) {
+		ring.set(MATE_UUID.get(), mate.getUUID().toString());
+		ring.set(ModItemDatas.HOLDER_UUID.get(), holder.getUUID().toString());
+		ring.set(ModItemDatas.MATE_NAME.get(), holder.getName().getString());
+	}
+	
+	public static boolean isValidRing(ItemStack ring) {
+		return (ring.getItem() instanceof CommonRing)
+				&& getHolderUUID(ring).isPresent()
+				&& getMateUUID(ring).isPresent();
+	}
 }

@@ -1,5 +1,6 @@
-package cn.breadnicecat.lovemod;
+package cn.breadnicecat.lovemod.utils;
 
+import cn.breadnicecat.lovemod.LoveMod;
 import net.minecraft.resources.ResourceLocation;
 
 /**
@@ -16,4 +17,5 @@ public class Utils {
 	public static ResourceLocation prefix(String path) {
 		return ResourceLocation.fromNamespaceAndPath(LoveMod.MOD_ID, path);
 	}
+	
 }

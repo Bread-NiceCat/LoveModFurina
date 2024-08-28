@@ -15,7 +15,7 @@
     "###"
   ],
   "result": {
-    "item": "lovemod:ring_engagement"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "lovemod:engagement_ring"
+  }
 }
