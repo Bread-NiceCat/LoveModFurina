@@ -8,6 +8,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 
+import static cn.breadnicecat.lovemod.LoveMod.LOGGER;
 import static cn.breadnicecat.lovemod.LoveMod.MOD_ID;
 import static cn.breadnicecat.lovemod.utils.Utils.prefix;
 
@@ -21,6 +22,10 @@ import static cn.breadnicecat.lovemod.utils.Utils.prefix;
  * <p>
  **/
 public class ModTabs {
+	static {
+		LOGGER.info("Loading Tabs");
+	}
+	
 	public static final DeferredRegister<CreativeModeTab> register = DeferredRegister.create(MOD_ID, Registries.CREATIVE_MODE_TAB);
 	public static final String key = "tab.lovemod.title";
 	public static final RegistrySupplier<CreativeModeTab> MOD_TAB =

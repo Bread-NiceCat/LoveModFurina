@@ -1,7 +1,7 @@
 package cn.breadnicecat.lovemod.item.items;
 
 import cn.breadnicecat.lovemod.PlayerAddition;
-import cn.breadnicecat.lovemod.item.ModItemDatas;
+import cn.breadnicecat.lovemod.item.ModItemData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static cn.breadnicecat.lovemod.item.ModItemDatas.*;
+import static cn.breadnicecat.lovemod.item.ModItemData.*;
 import static net.minecraft.ChatFormatting.*;
 import static net.minecraft.network.chat.Component.literal;
 import static net.minecraft.network.chat.Component.translatable;
@@ -169,8 +169,8 @@ public abstract class CommonRing extends Item {
 	
 	public static void setRingData(ItemStack ring, Player holder, Player mate) {
 		ring.set(MATE_UUID.get(), mate.getUUID().toString());
-		ring.set(ModItemDatas.HOLDER_UUID.get(), holder.getUUID().toString());
-		ring.set(ModItemDatas.MATE_NAME.get(), holder.getName().getString());
+		ring.set(ModItemData.HOLDER_UUID.get(), holder.getUUID().toString());
+		ring.set(ModItemData.MATE_NAME.get(), holder.getName().getString());
 	}
 	
 	public static boolean isValidRing(ItemStack ring) {

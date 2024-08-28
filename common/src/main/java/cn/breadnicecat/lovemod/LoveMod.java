@@ -1,6 +1,6 @@
 package cn.breadnicecat.lovemod;
 
-import cn.breadnicecat.lovemod.item.ModItemDatas;
+import cn.breadnicecat.lovemod.item.ModItemData;
 import cn.breadnicecat.lovemod.item.ModItems;
 import cn.breadnicecat.lovemod.item.ModTabs;
 import com.mojang.logging.LogUtils;
@@ -13,7 +13,9 @@ public class LoveMod {
 	public static void init() {
 		LOGGER.info("Initializing...");
 		ModItems.register.register();
-		ModItemDatas.register.register();
+		ModItemData.register.register();
 		ModTabs.register.register();
+		LOGGER.info("Initializing Done");
+		
 	}
 }

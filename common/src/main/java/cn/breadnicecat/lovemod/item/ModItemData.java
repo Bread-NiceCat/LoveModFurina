@@ -8,6 +8,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.util.ExtraCodecs;
 
+import static cn.breadnicecat.lovemod.LoveMod.LOGGER;
 import static cn.breadnicecat.lovemod.utils.Utils.prefix;
 
 /**
@@ -19,7 +20,11 @@ import static cn.breadnicecat.lovemod.utils.Utils.prefix;
  *
  * <p>
  **/
-public class ModItemDatas {
+public class ModItemData {
+	static {
+		LOGGER.info("Loading Items Data");
+	}
+	
 	public static DeferredRegister<DataComponentType<?>> register = DeferredRegister.create(LoveMod.MOD_ID, Registries.DATA_COMPONENT_TYPE);
 	
 	public static final DeferredSupplier<DataComponentType<String>> MATE_UUID = register.register(prefix("mate_uuid"),
