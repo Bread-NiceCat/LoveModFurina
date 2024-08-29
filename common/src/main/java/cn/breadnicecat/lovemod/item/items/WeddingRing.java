@@ -1,6 +1,7 @@
 package cn.breadnicecat.lovemod.item.items;
 
 import cn.breadnicecat.lovemod.PlayerAddition;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -37,6 +38,8 @@ public class WeddingRing extends CommonRing {
 				&& ta.getUUID().equals(meMate.get())) {
 			//重新绑定
 			setRingData(stack, thisPlayer, ta);
+			thisPlayer.sendSystemMessage(Component.translatable(rebind_ok));
+			return InteractionResult.CONSUME;
 		}
 		return super.interactPlayer(stack, thisPlayer, ta, hand);
 	}

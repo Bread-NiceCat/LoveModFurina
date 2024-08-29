@@ -63,6 +63,8 @@ public class CLanguageProvider implements DataProvider {
 		add(rebind_ok, "Rebinding successful.", "重新绑定成功。");
 		add(agreement_not_suit, "This divorce agreement does not belong to you.", "这张离婚协议书不属于你们。");
 		add(unmarried, "You're still single.", "你尚未结婚。");
+		add(unaccepted, "You have not consented to the marriage.", "你尚未同意这桩婚事。");
+		add(divorced, "You have divorced from %s.", "你已与%s离婚。");
 		
 		
 	}

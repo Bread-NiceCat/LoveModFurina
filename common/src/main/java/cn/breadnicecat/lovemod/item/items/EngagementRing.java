@@ -10,7 +10,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
 import java.util.Optional;
@@ -37,26 +36,28 @@ public class EngagementRing extends CommonRing {
 		if (!(thisPlayer.level() instanceof ServerLevel level)) {
 			return InteractionResult.SUCCESS;
 		}
-		//自己已经结婚了
-		Optional<UUID> meMate = PlayerAddition.getMate(thisPlayer);
-		if (meMate.isPresent()) {
-			thisPlayer.sendSystemMessage(translatable(me_married).withStyle(ChatFormatting.RED));
-			return InteractionResult.FAIL;
-		}
-		//他已经结婚了
-		Optional<UUID> taMate = PlayerAddition.getMate(ta);
-		if (taMate.isPresent()) {
-			thisPlayer.sendSystemMessage(translatable(ta_married, ta.getName()).withStyle(ChatFormatting.RED));
-			return InteractionResult.FAIL;
-		}
 		if (!isValidRing(stack)) {
-			//这是个戒指未绑定
+			//这是个戒指未绑定,判定为求婚操作
+			
+			//自己已经结婚了
+			Optional<UUID> meMate = PlayerAddition.getMate(thisPlayer);
+			if (meMate.isPresent()) {
+				thisPlayer.sendSystemMessage(translatable(me_married).withStyle(ChatFormatting.RED));
+				return InteractionResult.FAIL;
+			}
+			//他已经结婚了
+			Optional<UUID> taMate = PlayerAddition.getMate(ta);
+			if (taMate.isPresent()) {
+				thisPlayer.sendSystemMessage(translatable(ta_married, ta.getName()).withStyle(ChatFormatting.RED));
+				return InteractionResult.FAIL;
+			}
+			
+			//求婚
+			
 			//求婚戒指的holder应该为现在的mate
 			setRingData(stack, ta, thisPlayer);
 			//赠送
-			if (give(ta, stack, true)) {
-				thisPlayer.setItemInHand(hand, Items.AIR.getDefaultInstance());
-			}
+			give(ta, stack, true);
 			//提醒
 			thisPlayer.sendSystemMessage(translatable(me_request, thisPlayer.getName(), thisPlayer.getName()).withStyle(YELLOW));
 			ta.sendSystemMessage(translatable(request, thisPlayer.getName(), thisPlayer.getName()).withStyle(YELLOW));
@@ -87,21 +88,26 @@ public class EngagementRing extends CommonRing {
 			level.getServer().getPlayerList().broadcastSystemMessage(component, false);
 			//返还结婚戒指
 			ItemStack wed = new WeddingRing().getDefaultInstance();
-			setRingData(wed, ta, thisPlayer);
-			give(ta, wed, true);
+			
 			return InteractionResult.CONSUME;
 		}
 		return super.interactPlayer(stack, thisPlayer, ta, hand);
 	}
 	
-	protected static boolean give(Player ta, ItemStack stack, boolean dropIfFail) {
+	/**
+	 * @param force 强制给予，如果无法给到对方物品栏中就掉落到他脚下
+	 * @return 是否成功
+	 */
+	protected static boolean give(Player ta, ItemStack stack, boolean force) {
+		ItemStack ori = stack;
+		stack = stack.copy();
 		if (!ta.addItem(stack)) {
-			if (dropIfFail) {
+			if (force) {
 				Level level = ta.level();
 				level.addFreshEntity(new ItemEntity(level, ta.getX(), ta.getY(), ta.getZ(), stack));
-				return true;
-			}
+			} else return false;
 		}
-		return false;
+		ori.setCount(0);
+		return true;
 	}
 }

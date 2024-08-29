@@ -6,7 +6,6 @@ architectury {
     neoForge()
 }
 def generatedResources = new File(project(":common").getProjectDir(), "/src/main/generated")
-archivesBaseName += "-neoforge"
 configurations {
     common {
         canBeResolved = true

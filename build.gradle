@@ -6,7 +6,7 @@ plugins {
 }
 
 architectury {
-    minecraft = project.minecraft_version
+    minecraft = rootProject.minecraft_version
 }
 allprojects {
     group = rootProject.maven_group

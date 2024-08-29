@@ -30,7 +30,7 @@ public class ModTabs {
 	public static final String key = "tab.lovemod.title";
 	public static final RegistrySupplier<CreativeModeTab> MOD_TAB =
 			register.register(prefix(MOD_ID), () -> CreativeTabRegistry.create(builder -> builder.title(Component.translatable(key))
-					.icon(() -> ModItems.WEDDING_RING.get().getDefaultInstance())
+					.icon(() -> ModItems.ENGAGEMENT_RING.get().getDefaultInstance())
 					.displayItems((a, b) -> {
 						for (RegistrySupplier<Item> supplier : ModItems.register) {
 							b.accept(supplier.get());

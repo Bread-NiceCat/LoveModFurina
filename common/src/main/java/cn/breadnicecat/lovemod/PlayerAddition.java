@@ -4,6 +4,7 @@ import cn.breadnicecat.lovemod.mixin.MixinEntity;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -25,13 +26,11 @@ public class PlayerAddition {
 	public static EntityDataAccessor<Optional<UUID>> DATA_MATE;
 	public static final String DATA_MATE_UUID = "mate_uuid";
 	
-	public static Optional<UUID> getMate(Player player) {
-		SynchedEntityData data = ((MixinEntity) player).getEntityData();
-		if (data == null) return Optional.empty();
-		return data.get(DATA_MATE);
+	public static Optional<UUID> getMate(@NotNull Player player) {
+		return getDataSlot(player).get(DATA_MATE);
 	}
 	
-	public static boolean isCP(Player p1, Player p2) {
+	public static boolean isCP(@NotNull Player p1, @NotNull Player p2) {
 		Optional<UUID> p1m = getMate(p1);
 		Optional<UUID> p2m = getMate(p2);
 		return p1m.isPresent() && p2m.isPresent()
@@ -39,13 +38,16 @@ public class PlayerAddition {
 				&& p1.getUUID().equals(p2m.get());
 	}
 	
-	public static void setMate(Player player, @Nullable Player target) {
+	public static void setMate(@NotNull Player player, @Nullable Player target) {
 		setMateUUID(player, target == null ? null : target.getUUID());
 	}
 	
-	public static void setMateUUID(Player player, @Nullable UUID target) {
-		SynchedEntityData data = ((MixinEntity) player).getEntityData();
-		data.set(DATA_MATE, Optional.ofNullable(target));
+	public static void setMateUUID(@NotNull Player player, @Nullable UUID target) {
+		getDataSlot(player).set(DATA_MATE, Optional.ofNullable(target));
+	}
+	
+	public static SynchedEntityData getDataSlot(@NotNull Player player) {
+		return ((MixinEntity) player).getEntityData();
 	}
 	
 }

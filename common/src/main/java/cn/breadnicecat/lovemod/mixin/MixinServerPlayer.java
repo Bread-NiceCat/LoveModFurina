@@ -29,13 +29,15 @@ public abstract class MixinServerPlayer {
 		if (self.tickCount % 20 == 0) {
 			ServerLevel level = self.serverLevel();
 			Player nearestPlayer = level.getNearestPlayer(self, 3d);
-			if (PlayerAddition.isCP(self, nearestPlayer)) {
-				level.sendParticles(ParticleTypes.HEART,
-						self.getRandomX(1.0),
-						self.getRandomY(),
-						self.getRandomZ(1.0),
-						1, 0, 0.5, 0,
-						level.random.nextGaussian() * 0.02);
+			if(nearestPlayer!=null){
+				if (PlayerAddition.isCP(self, nearestPlayer)) {
+					level.sendParticles(ParticleTypes.HEART,
+							self.getRandomX(1.0),
+							self.getRandomY(),
+							self.getRandomZ(1.0),
+							1, 0, 0.5, 0,
+							level.random.nextGaussian() * 0.02);
+				}
 			}
 		}
 	}

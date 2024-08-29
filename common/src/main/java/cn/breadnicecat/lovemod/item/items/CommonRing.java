@@ -54,6 +54,8 @@ public abstract class CommonRing extends Item {
 	public static String player_offline = "lovemod.player_offline.desc";
 	public static String not_from_ta = "lovemod.not_from_ta.desc";
 	public static String rebind_ok = "lovemod.rebind_ok.desc";
+	public static String unaccepted = "lovemod.unaccepted.desc";
+	public static String divorced = "lovemod.divorced.desc";
 	
 	public CommonRing(Properties properties) {
 		super(properties);
@@ -67,31 +69,42 @@ public abstract class CommonRing extends Item {
 	 * 两种戒指都可以传送
 	 */
 	@Override
-	public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
-		ItemStack stack = player.getItemInHand(usedHand);
+	public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player thisPlayer, InteractionHand usedHand) {
+		ItemStack stack = thisPlayer.getItemInHand(usedHand);
 		if (level.isClientSide()) {
 			return InteractionResultHolder.success(stack);
 		}
 		
 		Optional<UUID> ringHolderUUID = getHolderUUID(stack);
 		Optional<UUID> ringMateUUID = getMateUUID(stack);
-		Optional<UUID> mateUUID = PlayerAddition.getMate(player);
+		Optional<String> ringMateName = getMateName(stack);
+		Optional<UUID> mateUUID = PlayerAddition.getMate(thisPlayer);
 		//戒指上面没保存数据
 		if (!isValidRing(stack)) {
 			//没结婚
 			if (mateUUID.isEmpty()) {
-				player.sendSystemMessage(translatable(unmarried).withStyle(YELLOW));
+				thisPlayer.sendSystemMessage(translatable(unmarried).withStyle(YELLOW));
 				return InteractionResultHolder.fail(stack);
 			}
-			player.sendSystemMessage(translatable(unbind_ring).withStyle(ChatFormatting.YELLOW));
+			//未绑定
+			thisPlayer.sendSystemMessage(translatable(unbind_ring).withStyle(ChatFormatting.YELLOW));
 			return InteractionResultHolder.fail(stack);
 		}
 		//和数据不匹配
-		if (mateUUID.isEmpty()//自己都没结婚哪里来的结婚戒指
-				//戒指上的数据和玩家身上的不匹配
-				|| !player.getUUID().equals(ringHolderUUID.get())
-				|| !mateUUID.get().equals(ringMateUUID.get())) {
-			player.sendSystemMessage(translatable(not_my_ring));
+		if (thisPlayer.getUUID().equals(ringHolderUUID.get())) {
+			thisPlayer.sendSystemMessage(translatable(not_my_ring).withStyle(RED));
+			return InteractionResultHolder.fail(stack);
+		}
+		//持有者确实是自己，但是没有对象，则判断为没有同意这门婚事
+		if (mateUUID.isEmpty()) {
+			thisPlayer.sendSystemMessage(translatable(unaccepted).withStyle(YELLOW));
+			return InteractionResultHolder.fail(stack);
+		}
+		//持有者确实是自己，但是物品上的对象与玩家身上的对象数据不匹配，则判定为已经离婚
+		if (mateUUID.get().equals(ringMateUUID.get())) {
+			Player mateByUUID = level.getPlayerByUUID(ringMateUUID.get());
+			var mate = mateByUUID != null ? mateByUUID.getName() : ringMateName.orElse("null");
+			thisPlayer.sendSystemMessage(translatable(divorced, mate).withStyle(YELLOW));
 			return InteractionResultHolder.fail(stack);
 		}
 		Player mate = level.getPlayerByUUID(mateUUID.get());
@@ -99,12 +112,12 @@ public abstract class CommonRing extends Item {
 			//传送
 			float yRotDeg = Mth.wrapDegrees(mate.getYRot());
 			float xRotDeg = Mth.wrapDegrees(mate.getXRot());
-			player.teleportTo((ServerLevel) mate.level(), mate.getX(), mate.getY(), mate.getZ(), EnumSet.noneOf(RelativeMovement.class), yRotDeg, xRotDeg);
+			thisPlayer.teleportTo((ServerLevel) mate.level(), mate.getX(), mate.getY(), mate.getZ(), EnumSet.noneOf(RelativeMovement.class), yRotDeg, xRotDeg);
 			return InteractionResultHolder.consume(stack);
 		} else {
-			player.sendSystemMessage(translatable(player_offline).withStyle(ChatFormatting.YELLOW));
+			thisPlayer.sendSystemMessage(translatable(player_offline).withStyle(ChatFormatting.YELLOW));
 		}
-		return super.use(level, player, usedHand);
+		return super.use(level, thisPlayer, usedHand);
 	}
 	
 	@Override
@@ -173,9 +186,11 @@ public abstract class CommonRing extends Item {
 		ring.set(ModItemData.MATE_NAME.get(), holder.getName().getString());
 	}
 	
+	/**
+	 * 检测关键数据HOLDER_UUID和MATE_UUID，但是不检测MATE_NAME
+	 */
 	public static boolean isValidRing(ItemStack ring) {
-		return (ring.getItem() instanceof CommonRing)
-				&& getHolderUUID(ring).isPresent()
+		return getHolderUUID(ring).isPresent()
 				&& getMateUUID(ring).isPresent();
 	}
 }

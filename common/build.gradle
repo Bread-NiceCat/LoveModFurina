@@ -13,9 +13,7 @@ dependencies {
     modCompileOnly("mezz.jei:jei-${rootProject.minecraft_version}-common-api:${rootProject.jei_version}")
     modRuntimeOnly("mezz.jei:jei-${rootProject.minecraft_version}-common:${rootProject.jei_version}")
 }
-repositories {
-    mavenCentral()
-}
+
 sourceSets {
     main {
         resources {

@@ -1,6 +1,7 @@
 package cn.breadnicecat.lovemod.item.items;
 
 import cn.breadnicecat.lovemod.PlayerAddition;
+import net.minecraft.ChatFormatting;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -40,8 +41,7 @@ public class DivorceAgreement extends Item {
 	}
 	
 	public boolean isValidFor(ItemStack agreement, Player p1, Player p2) {
-		if (!validate(agreement)) return false;
-		return true;
+		return validate(agreement);
 	}
 	
 	@Override
@@ -50,8 +50,9 @@ public class DivorceAgreement extends Item {
 			if (PlayerAddition.isCP(thisPlayer, ta)) {
 				PlayerAddition.setMate(thisPlayer, null);
 				PlayerAddition.setMate(ta, null);
-				thisPlayer.sendSystemMessage(translatable(divorce, ta.getName()));
-				ta.sendSystemMessage(translatable(divorce, thisPlayer.getName()));
+				thisPlayer.sendSystemMessage(translatable(divorce, ta.getName()).withStyle(ChatFormatting.YELLOW));
+				ta.sendSystemMessage(translatable(divorce, thisPlayer.getName()).withStyle(ChatFormatting.YELLOW));
+				stack.shrink(1);
 			}
 		}
 		return super.interactLivingEntity(stack, thisPlayer, interactionTarget, usedHand);
