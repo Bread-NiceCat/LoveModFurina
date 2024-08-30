@@ -70,7 +70,7 @@ public class CLanguageProvider implements DataProvider {
 		add(page_info, "Page %d/%d", "第%d页，共%d页");
 		add(page_prev, "<Prev>", "<上一页>");
 		add(page_next, "<Next>", "<下一页>");
-		add(click_copy_uuid, "Right click to copy UUID", "右击复制UUID");
+		add(click_copy_uuid, "Click to copy UUID", "单击复制UUID");
 		
 		
 	}

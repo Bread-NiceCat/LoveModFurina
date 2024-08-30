@@ -3,7 +3,7 @@
   "item.lovemod.engagement_ring": "求婚戒指",
   "item.lovemod.wedding_ring": "结婚戒指",
   "lovemod.agreement_not_suit.desc": "这张离婚协议书不属于你们。",
-  "lovemod.cmd.click_copy_uuid": "右击复制UUID",
+  "lovemod.cmd.click_copy_uuid": "单击复制UUID",
   "lovemod.cmd.page_info": "第%d页，共%d页",
   "lovemod.cmd.page_next": "<下一页>",
   "lovemod.cmd.page_not_exist": "页码不存在!",

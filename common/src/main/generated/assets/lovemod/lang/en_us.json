@@ -3,7 +3,7 @@
   "item.lovemod.engagement_ring": "Engagement Ring",
   "item.lovemod.wedding_ring": "Wedding Ring",
   "lovemod.agreement_not_suit.desc": "This divorce agreement does not belong to you.",
-  "lovemod.cmd.click_copy_uuid": "Right click to copy UUID",
+  "lovemod.cmd.click_copy_uuid": "Click to copy UUID",
   "lovemod.cmd.page_info": "Page %d/%d",
   "lovemod.cmd.page_next": "<Next>",
   "lovemod.cmd.page_not_exist": "Page not exists!",
