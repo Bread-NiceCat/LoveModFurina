@@ -18,7 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
-import static cn.breadnicecat.lovemod.item.ModCommands.*;
+import static cn.breadnicecat.lovemod.ModCommands.*;
 import static cn.breadnicecat.lovemod.item.items.CommonRing.*;
 import static cn.breadnicecat.lovemod.item.items.DivorceAgreement.agreement_not_suit;
 import static cn.breadnicecat.lovemod.item.items.DivorceAgreement.divorce;

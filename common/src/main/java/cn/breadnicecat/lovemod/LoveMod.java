@@ -1,6 +1,5 @@
 package cn.breadnicecat.lovemod;
 
-import cn.breadnicecat.lovemod.item.ModCommands;
 import cn.breadnicecat.lovemod.item.ModItemData;
 import cn.breadnicecat.lovemod.item.ModItems;
 import cn.breadnicecat.lovemod.item.ModTabs;

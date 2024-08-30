@@ -90,7 +90,7 @@ public abstract class CommonRing extends Item {
 			return InteractionResultHolder.fail(stack);
 		}
 		//和数据不匹配
-		if (thisPlayer.getUUID().equals(ringHolderUUID.get())) {
+		if (!thisPlayer.getUUID().equals(ringHolderUUID.get())) {
 			thisPlayer.sendSystemMessage(translatable(not_my_ring).withStyle(RED));
 			return InteractionResultHolder.fail(stack);
 		}
@@ -193,7 +193,7 @@ public abstract class CommonRing extends Item {
 	public static void setRingData(ItemStack ring, Player holder, Player mate) {
 		ring.set(MATE_UUID.get(), mate.getUUID().toString());
 		ring.set(HOLDER_UUID.get(), holder.getUUID().toString());
-		ring.set(MATE_NAME.get(), holder.getName().getString());
+		ring.set(MATE_NAME.get(), mate.getName().getString());
 	}
 	
 	/**

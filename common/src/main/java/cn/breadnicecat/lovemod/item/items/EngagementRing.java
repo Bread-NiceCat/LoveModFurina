@@ -90,6 +90,7 @@ public class EngagementRing extends CommonRing {
 			level.getServer().getPlayerList().broadcastSystemMessage(component, false);
 			//返还结婚戒指
 			ItemStack wed = new WeddingRing().getDefaultInstance();
+			setRingData(wed, ta, thisPlayer);
 			give(ta, wed, true);
 			return InteractionResult.CONSUME;
 		}
@@ -101,15 +102,14 @@ public class EngagementRing extends CommonRing {
 	 * @return 是否成功
 	 */
 	protected static boolean give(Player ta, ItemStack stack, boolean force) {
-		ItemStack ori = stack;
-		stack = stack.copy();
-		if (!ta.addItem(stack)) {
+		ItemStack copy = stack.copy();
+		if (!ta.addItem(copy)) {
 			if (force) {
 				Level level = ta.level();
-				level.addFreshEntity(new ItemEntity(level, ta.getX(), ta.getY(), ta.getZ(), stack));
+				level.addFreshEntity(new ItemEntity(level, ta.getX(), ta.getY(), ta.getZ(), copy));
 			} else return false;
 		}
-		ori.setCount(0);
+		stack.setCount(0);
 		return true;
 	}
 }

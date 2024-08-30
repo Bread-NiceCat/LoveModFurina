@@ -1,6 +1,5 @@
-package cn.breadnicecat.lovemod.item;
+package cn.breadnicecat.lovemod;
 
-import cn.breadnicecat.lovemod.PlayerAddition;
 import cn.breadnicecat.lovemod.item.items.CommonRing;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
