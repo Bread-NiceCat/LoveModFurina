@@ -9,10 +9,12 @@ plugins {
 architectury {
     minecraft = rootProject.minecraft_version
 }
+base {
+    archivesName = "$archives_name-$minecraft_version"
+}
 allprojects {
     group = rootProject.maven_group
     version = rootProject.mod_version
-    archivesBaseName = "$archives_name-$minecraft_version"
 
     repositories {
         if (Locale.getDefault() == Locale.CHINA) {
