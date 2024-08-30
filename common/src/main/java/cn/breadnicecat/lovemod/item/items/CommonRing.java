@@ -161,7 +161,7 @@ public abstract class CommonRing extends Item {
 				}
 			}
 			Optional<UUID> holderUUID = getHolderUUID(stack);
-			if (!instance.getGameProfile().getId().equals(holderUUID.get())) {
+			if (!instance.player.getUUID().equals(holderUUID.get())) {
 				tips.add(translatable(not_my_ring).withStyle(RED));
 			}
 		}

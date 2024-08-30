@@ -1,6 +1,7 @@
 package cn.breadnicecat.lovemod.item.items;
 
 import cn.breadnicecat.lovemod.PlayerAddition;
+import cn.breadnicecat.lovemod.item.ModItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
@@ -83,7 +84,7 @@ public class EngagementRing extends CommonRing {
 			PlayerAddition.setMate(ta, thisPlayer);
 			setSession(stack, false);
 			//返还结婚戒指
-			ItemStack wed = new WeddingRing().getDefaultInstance();
+			ItemStack wed = ModItems.WEDDING_RING.get().getDefaultInstance();
 			setRingData(wed, ta, thisPlayer);
 			give(ta, wed, true);
 			
