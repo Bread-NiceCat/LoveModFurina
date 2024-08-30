@@ -8,10 +8,11 @@
     "Bread_NiceCat"
   ],
   "contact": {
-    "homepage": ""
+    "homepage": "https://github.com/Bread-NiceCat/LoveModFurina"
   },
   "license": "GPL-3.0",
   "environment": "*",
+  "icon": "logo.png",
   "entrypoints": {
     "main": [
       "cn.breadnicecat.lovemod.fabric.LoveModImpl"

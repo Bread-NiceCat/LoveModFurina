@@ -36,7 +36,7 @@ public class EngagementRing extends CommonRing {
 		if (!(thisPlayer.level() instanceof ServerLevel level)) {
 			return InteractionResult.SUCCESS;
 		}
-		if (!isValidRing(stack)) {
+		if (!isValidRing(stack) && !isRunning(stack)) {
 			//这是个戒指未绑定,判定为求婚操作
 			
 			//自己已经结婚了
@@ -57,11 +57,12 @@ public class EngagementRing extends CommonRing {
 			//求婚戒指的holder应该为现在的mate
 			setRingData(stack, ta, thisPlayer);
 			//赠送
+			setSession(stack, true);
 			give(ta, stack, true);
 			//提醒
 			thisPlayer.sendSystemMessage(translatable(me_request, thisPlayer.getName(), thisPlayer.getName()).withStyle(YELLOW));
 			ta.sendSystemMessage(translatable(request, thisPlayer.getName(), thisPlayer.getName()).withStyle(YELLOW));
-		} else {
+		} else if (isRunning(stack)) {
 			//这段逻辑应该由被求婚者调用
 			Optional<UUID> ringHolderUUID = getHolderUUID(stack);
 			//戒指已经绑定
@@ -80,15 +81,16 @@ public class EngagementRing extends CommonRing {
 			//互相绑定玩家数据
 			PlayerAddition.setMate(thisPlayer, ta);
 			PlayerAddition.setMate(ta, thisPlayer);
-			
+			setSession(stack, false);
 			MutableComponent component = translatable(congratulation,
 					thisPlayer.getName().copy().withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.UNDERLINE),
 					ta.getName().copy().withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.UNDERLINE)
 			).withStyle(ChatFormatting.AQUA, ChatFormatting.BOLD);
+			
 			level.getServer().getPlayerList().broadcastSystemMessage(component, false);
 			//返还结婚戒指
 			ItemStack wed = new WeddingRing().getDefaultInstance();
-			
+			give(ta, wed, true);
 			return InteractionResult.CONSUME;
 		}
 		return super.interactPlayer(stack, thisPlayer, ta, hand);

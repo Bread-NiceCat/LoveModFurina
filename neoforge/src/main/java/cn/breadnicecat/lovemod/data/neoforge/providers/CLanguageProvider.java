@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
+import static cn.breadnicecat.lovemod.item.ModCommands.*;
 import static cn.breadnicecat.lovemod.item.items.CommonRing.*;
 import static cn.breadnicecat.lovemod.item.items.DivorceAgreement.agreement_not_suit;
 import static cn.breadnicecat.lovemod.item.items.DivorceAgreement.divorce;
@@ -65,6 +66,11 @@ public class CLanguageProvider implements DataProvider {
 		add(unmarried, "You're still single.", "你尚未结婚。");
 		add(unaccepted, "You have not consented to the marriage.", "你尚未同意这桩婚事。");
 		add(divorced, "You have divorced from %s.", "你已与%s离婚。");
+		add(page_not_exist, "Page not exists!", "页码不存在!");
+		add(page_info, "Page %d/%d", "第%d页，共%d页");
+		add(page_prev, "<Prev>", "<上一页>");
+		add(page_next, "<Next>", "<下一页>");
+		add(click_copy_uuid, "Right click to copy UUID", "右击复制UUID");
 		
 		
 	}

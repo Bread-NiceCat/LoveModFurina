@@ -10,6 +10,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static cn.breadnicecat.lovemod.PlayerAddition.getMate;
+
 /**
  * Created in 2024/8/29 02:55
  * Project: LoveModFurina
@@ -21,15 +23,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  **/
 @Mixin(ServerPlayer.class)
 public abstract class MixinServerPlayer {
+	@Inject(method = "restoreFrom", at = @At("TAIL"))
+	public void restoreFrom(ServerPlayer that, boolean keepEverything, CallbackInfo ci) {
+		PlayerAddition.setMateUUID((Player) (Object) this, getMate(that).orElse(null));
+	}
 	
 	@Inject(method = "tick", at = @At("TAIL"))
 	public void tick(CallbackInfo ci) {
-		//如果是CP，则添加爱心例子
+		//如果是CP，则添加爱心粒子
 		ServerPlayer self = (ServerPlayer) (Object) this;
 		if (self.tickCount % 20 == 0) {
 			ServerLevel level = self.serverLevel();
-			Player nearestPlayer = level.getNearestPlayer(self, 3d);
-			if(nearestPlayer!=null){
+			Player nearestPlayer = level.getNearestPlayer(self.getX(), self.getY(), self.getZ(),
+					4.0, (p) -> p != self);
+			if (nearestPlayer != null) {
 				if (PlayerAddition.isCP(self, nearestPlayer)) {
 					level.sendParticles(ParticleTypes.HEART,
 							self.getRandomX(1.0),

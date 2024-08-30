@@ -1,17 +1,16 @@
 modLoader = "javafml"
 loaderVersion = "[1,)"
-#issueTrackerURL = ""
+issueTrackerURL = "https://github.com/Bread-NiceCat/LoveModFurina/issues"
 license = "GNU GPL 3.0"
 
 [[mods]]
 modId = "lovemod"
 version = "${version}"
-displayName = "LoveMod:Furina"
+displayName = "LoveMod: Furina"
 authors = "Bread_NiceCat"
 description = '''
-
 '''
-#logoFile = ""
+logoFile = "logo.png"
 
 [[dependencies.lovemod]]
 modId = "neoforge"

@@ -1,5 +1,6 @@
 package cn.breadnicecat.lovemod;
 
+import cn.breadnicecat.lovemod.item.ModCommands;
 import cn.breadnicecat.lovemod.item.ModItemData;
 import cn.breadnicecat.lovemod.item.ModItems;
 import cn.breadnicecat.lovemod.item.ModTabs;
@@ -15,7 +16,7 @@ public class LoveMod {
 		ModItems.register.register();
 		ModItemData.register.register();
 		ModTabs.register.register();
+		ModCommands.register();
 		LOGGER.info("Initializing Done");
-		
 	}
 }

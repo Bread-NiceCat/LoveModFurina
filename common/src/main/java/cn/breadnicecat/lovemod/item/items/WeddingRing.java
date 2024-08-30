@@ -6,7 +6,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -22,9 +21,6 @@ import java.util.UUID;
  * <p>
  **/
 public class WeddingRing extends CommonRing {
-	public WeddingRing() {
-		super(new Properties().rarity(Rarity.UNCOMMON));
-	}
 	
 	@Override
 	protected InteractionResult interactPlayer(ItemStack stack, ServerPlayer thisPlayer, ServerPlayer ta, InteractionHand hand) {

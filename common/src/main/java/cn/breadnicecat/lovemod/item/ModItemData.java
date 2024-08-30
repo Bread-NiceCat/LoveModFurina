@@ -1,6 +1,7 @@
 package cn.breadnicecat.lovemod.item;
 
 import cn.breadnicecat.lovemod.LoveMod;
+import com.mojang.serialization.Codec;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.DeferredSupplier;
 import net.minecraft.core.component.DataComponentType;
@@ -35,5 +36,7 @@ public class ModItemData {
 	//供显示用，防止该玩家不在线
 	public static final DeferredSupplier<DataComponentType<String>> MATE_NAME = register.register(prefix("mate_name"),
 			() -> DataComponentType.<String>builder().persistent(ExtraCodecs.NON_EMPTY_STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8).build());
+	public static final DeferredSupplier<DataComponentType<Boolean>> SESSION = register.register(prefix("session"),
+			() -> DataComponentType.<Boolean>builder().persistent(Codec.BOOL.stable()).networkSynchronized(ByteBufCodecs.BOOL).build());
 	
 }

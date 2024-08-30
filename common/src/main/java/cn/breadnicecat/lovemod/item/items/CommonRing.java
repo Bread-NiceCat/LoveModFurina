@@ -1,7 +1,6 @@
 package cn.breadnicecat.lovemod.item.items;
 
 import cn.breadnicecat.lovemod.PlayerAddition;
-import cn.breadnicecat.lovemod.item.ModItemData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
@@ -95,7 +94,7 @@ public abstract class CommonRing extends Item {
 			thisPlayer.sendSystemMessage(translatable(not_my_ring).withStyle(RED));
 			return InteractionResultHolder.fail(stack);
 		}
-		//持有者确实是自己，但是没有对象，则判断为没有同意这门婚事
+		//持有者确实是自己，但是自己没有对象，则判断为没有同意这门婚事
 		if (mateUUID.isEmpty()) {
 			thisPlayer.sendSystemMessage(translatable(unaccepted).withStyle(YELLOW));
 			return InteractionResultHolder.fail(stack);
@@ -125,7 +124,8 @@ public abstract class CommonRing extends Item {
 		Player player = context.getPlayer();
 		return player == null
 				? InteractionResult.FAIL
-				: use(context.getLevel(), player, context.getHand()).getResult();
+				: use(context.getLevel(), player, context.getHand())
+				.getResult();
 	}
 	
 	@Override
@@ -136,7 +136,7 @@ public abstract class CommonRing extends Item {
 		if (interactionTarget instanceof ServerPlayer ta) {
 			return interactPlayer(stack, (ServerPlayer) player, ta, usedHand);
 		}
-		return super.interactLivingEntity(stack, player, interactionTarget, usedHand);
+		return use(player.level(), player, usedHand).getResult();
 	}
 	
 	protected InteractionResult interactPlayer(ItemStack stack, ServerPlayer thisPlayer, ServerPlayer ta, InteractionHand hand) {
@@ -180,10 +180,20 @@ public abstract class CommonRing extends Item {
 		return Optional.ofNullable(ring.get(HOLDER_UUID.get())).map(UUID::fromString);
 	}
 	
+	public static boolean isRunning(ItemStack ring) {
+		Boolean b = ring.get(SESSION.get());
+		return b != null && b;
+	}
+	
+	//防止离婚之后仍然可以单方面重结婚
+	public static void setSession(ItemStack ring, boolean v) {
+		ring.set(SESSION.get(), v);
+	}
+	
 	public static void setRingData(ItemStack ring, Player holder, Player mate) {
 		ring.set(MATE_UUID.get(), mate.getUUID().toString());
-		ring.set(ModItemData.HOLDER_UUID.get(), holder.getUUID().toString());
-		ring.set(ModItemData.MATE_NAME.get(), holder.getName().getString());
+		ring.set(HOLDER_UUID.get(), holder.getUUID().toString());
+		ring.set(MATE_NAME.get(), holder.getName().getString());
 	}
 	
 	/**
