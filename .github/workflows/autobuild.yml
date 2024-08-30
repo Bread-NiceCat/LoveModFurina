@@ -36,12 +36,12 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: neoforge
-          path: neoforge/build/libs/lovemod-*[0-9].jar
+          path: neoforge/build/libs/*[0-9].jar
           if-no-files-found: error
 
       - name: upload fabric
         uses: actions/upload-artifact@v4
         with:
           name: fabric
-          path: fabric/build/libs/lovemod-*[0-9].jar
+          path: fabric/build/libs/*[0-9].jar
           if-no-files-found: error

@@ -15,6 +15,7 @@ base {
 allprojects {
     group = rootProject.maven_group
     version = rootProject.mod_version
+    archivesBaseName = "$archives_name-$minecraft_version"
 
     repositories {
         if (Locale.getDefault() == Locale.CHINA) {
