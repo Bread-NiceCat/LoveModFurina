@@ -132,16 +132,9 @@ public class ModCommands {
 				.append(translatable(page_info, page, pageTotal).withStyle(ChatFormatting.AQUA))
 				.append(Component.literal("=".repeat(4)));
 		
-		MutableComponent tail = Component.literal("=".repeat(2)).withStyle(ChatFormatting.GREEN);
 		source.sendSystemMessage(head);
-		list = list.subList(fromIndex, min(list.size() - 1, fromIndex + 10));
+		list = list.subList(fromIndex, min(list.size(), fromIndex + 10));
 		
-		MutableComponent prev = translatable(page_prev);
-		if (page > 0)
-			prev.withStyle(Style.EMPTY.applyFormat(ChatFormatting.AQUA).withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/lovemod listCouples " + (page - 1))));
-		tail.append(prev);
-		tail.append(Component.literal(" ".repeat(2)));
-		MutableComponent next = translatable(page_next);
 		ServerLevel level = source.getLevel();
 		for (Pair<Player, Object> pair : list) {
 			MutableComponent pre = onlinePlayer((ServerPlayer) pair.getFirst()).copy().append(" ❤ ");
@@ -153,8 +146,18 @@ public class ModCommands {
 			} else pre.append("unknown");
 			source.sendSystemMessage(pre);
 		}
-		if (page < pageTotal)
-			next.withStyle(Style.EMPTY.applyFormat(ChatFormatting.AQUA).withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/lovemod listCouples " + (page + 1))));
+		
+		MutableComponent tail = Component.literal("=".repeat(2)).withStyle(ChatFormatting.GREEN);
+		MutableComponent prev = translatable(page_prev);
+		if (page > 1) {
+			prev.withStyle(Style.EMPTY.applyFormat(ChatFormatting.YELLOW).withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/lovemod listCouples " + (page - 1))));
+		}
+		tail.append(prev);
+		tail.append(Component.literal(" ".repeat(2)));
+		MutableComponent next = translatable(page_next);
+		if (page < pageTotal) {
+			next.withStyle(Style.EMPTY.applyFormat(ChatFormatting.YELLOW).withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/lovemod listCouples " + (page + 1))));
+		}
 		tail.append(next);
 		tail.append(Component.literal("=".repeat(2)));
 		source.sendSystemMessage(tail);

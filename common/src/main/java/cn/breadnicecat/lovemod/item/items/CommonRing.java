@@ -95,12 +95,12 @@ public abstract class CommonRing extends Item {
 			return InteractionResultHolder.fail(stack);
 		}
 		//持有者确实是自己，但是自己没有对象，则判断为没有同意这门婚事
-		if (mateUUID.isEmpty()) {
+		if (mateUUID.isEmpty() && isRunning(stack)) {
 			thisPlayer.sendSystemMessage(translatable(unaccepted).withStyle(YELLOW));
 			return InteractionResultHolder.fail(stack);
 		}
 		//持有者确实是自己，但是物品上的对象与玩家身上的对象数据不匹配，则判定为已经离婚
-		if (!mateUUID.get().equals(ringMateUUID.get())) {
+		if (mateUUID.isEmpty() || !mateUUID.get().equals(ringMateUUID.get())) {
 			Player mateByUUID = level.getPlayerByUUID(ringMateUUID.get());
 			var mate = mateByUUID != null ? mateByUUID.getName() : ringMateName.orElse("null");
 			thisPlayer.sendSystemMessage(translatable(divorced, mate).withStyle(YELLOW));
@@ -114,7 +114,7 @@ public abstract class CommonRing extends Item {
 			thisPlayer.teleportTo((ServerLevel) mate.level(), mate.getX(), mate.getY(), mate.getZ(), EnumSet.noneOf(RelativeMovement.class), yRotDeg, xRotDeg);
 			return InteractionResultHolder.consume(stack);
 		} else {
-			thisPlayer.sendSystemMessage(translatable(player_offline).withStyle(ChatFormatting.YELLOW));
+			thisPlayer.sendSystemMessage(translatable(player_offline, getMateName(stack)).withStyle(ChatFormatting.YELLOW));
 		}
 		return super.use(level, thisPlayer, usedHand);
 	}
