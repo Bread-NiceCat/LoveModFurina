@@ -82,16 +82,16 @@ public class EngagementRing extends CommonRing {
 			PlayerAddition.setMate(thisPlayer, ta);
 			PlayerAddition.setMate(ta, thisPlayer);
 			setSession(stack, false);
-			MutableComponent component = translatable(congratulation,
-					thisPlayer.getName().copy().withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.UNDERLINE),
-					ta.getName().copy().withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.UNDERLINE)
-			).withStyle(ChatFormatting.AQUA, ChatFormatting.BOLD);
-			
-			level.getServer().getPlayerList().broadcastSystemMessage(component, false);
 			//返还结婚戒指
 			ItemStack wed = new WeddingRing().getDefaultInstance();
 			setRingData(wed, ta, thisPlayer);
 			give(ta, wed, true);
+			
+			MutableComponent component = translatable(congratulation,
+					thisPlayer.getName().copy().withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.UNDERLINE),
+					ta.getName().copy().withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.UNDERLINE)
+			).withStyle(ChatFormatting.AQUA, ChatFormatting.BOLD);
+			level.getServer().getPlayerList().broadcastSystemMessage(component, false);
 			return InteractionResult.CONSUME;
 		}
 		return super.interactPlayer(stack, thisPlayer, ta, hand);
@@ -112,4 +112,5 @@ public class EngagementRing extends CommonRing {
 		stack.setCount(0);
 		return true;
 	}
+	
 }

@@ -1,14 +1,12 @@
 package cn.breadnicecat.lovemod.item.items;
 
-import cn.breadnicecat.lovemod.PlayerAddition;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.Optional;
-import java.util.UUID;
+import static cn.breadnicecat.lovemod.PlayerAddition.isCP;
 
 
 /**
@@ -26,12 +24,7 @@ public class WeddingRing extends CommonRing {
 	protected InteractionResult interactPlayer(ItemStack stack, ServerPlayer thisPlayer, ServerPlayer ta, InteractionHand hand) {
 		//只有结婚戒指可以重新绑定
 		//未绑定的戒指，并且me和ta互为情侣
-		Optional<UUID> meMate = PlayerAddition.getMate(thisPlayer);
-		Optional<UUID> taMate = PlayerAddition.getMate(thisPlayer);
-		if (!isValidRing(stack)
-				&& meMate.isPresent() && taMate.isPresent()
-				&& thisPlayer.getUUID().equals(taMate.get())
-				&& ta.getUUID().equals(meMate.get())) {
+		if (!isValidRing(stack) && isCP(thisPlayer, ta)) {
 			//重新绑定
 			setRingData(stack, thisPlayer, ta);
 			thisPlayer.sendSystemMessage(Component.translatable(rebind_ok));

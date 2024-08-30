@@ -100,7 +100,7 @@ public abstract class CommonRing extends Item {
 			return InteractionResultHolder.fail(stack);
 		}
 		//持有者确实是自己，但是物品上的对象与玩家身上的对象数据不匹配，则判定为已经离婚
-		if (mateUUID.get().equals(ringMateUUID.get())) {
+		if (!mateUUID.get().equals(ringMateUUID.get())) {
 			Player mateByUUID = level.getPlayerByUUID(ringMateUUID.get());
 			var mate = mateByUUID != null ? mateByUUID.getName() : ringMateName.orElse("null");
 			thisPlayer.sendSystemMessage(translatable(divorced, mate).withStyle(YELLOW));
@@ -161,7 +161,7 @@ public abstract class CommonRing extends Item {
 				}
 			}
 			Optional<UUID> holderUUID = getHolderUUID(stack);
-			if (instance.getGameProfile().getId().equals(holderUUID.get())) {
+			if (!instance.getGameProfile().getId().equals(holderUUID.get())) {
 				tips.add(translatable(not_my_ring).withStyle(RED));
 			}
 		}
