@@ -3,6 +3,8 @@
   "item.lovemod.engagement_ring": "Engagement Ring",
   "item.lovemod.wedding_ring": "Wedding Ring",
   "lovemod.agreement_not_suit.desc": "This divorce agreement does not belong to you.",
+  "lovemod.click_marry.desc": "Use on a player to present",
+  "lovemod.click_rebind.desc": "Use on your partner to rebind",
   "lovemod.cmd.click_copy_uuid": "Click to copy UUID",
   "lovemod.cmd.page_info": "Page %d/%d",
   "lovemod.cmd.page_next": "<Next>",

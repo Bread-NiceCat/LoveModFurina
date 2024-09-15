@@ -1,10 +1,14 @@
 package cn.breadnicecat.lovemod.item.items;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+
+import java.util.List;
 
 import static cn.breadnicecat.lovemod.PlayerAddition.isCP;
 
@@ -31,5 +35,11 @@ public class WeddingRing extends CommonRing {
 			return InteractionResult.CONSUME;
 		}
 		return super.interactPlayer(stack, thisPlayer, ta, hand);
+	}
+	
+	@Override
+	protected void invalidAppendHoverText(ItemStack stack, TooltipContext context, List<Component> tips, TooltipFlag tooltipFlag) {
+		super.invalidAppendHoverText(stack, context, tips, tooltipFlag);
+		tips.add(Component.translatable(click_rebind).withStyle(ChatFormatting.YELLOW));
 	}
 }

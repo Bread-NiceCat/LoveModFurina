@@ -71,6 +71,8 @@ public class CLanguageProvider implements DataProvider {
 		add(page_prev, "<Prev>", "<上一页>");
 		add(page_next, "<Next>", "<下一页>");
 		add(click_copy_uuid, "Click to copy UUID", "单击复制UUID");
+		add(click_marry, "Use on a player to present", "对玩家使用送出求婚戒指");
+		add(click_rebind, "Use on your partner to rebind", "对你的伴侣使用可以重新绑定");
 		
 		
 	}

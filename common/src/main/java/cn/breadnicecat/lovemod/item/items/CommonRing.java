@@ -55,6 +55,8 @@ public abstract class CommonRing extends Item {
 	public static String rebind_ok = "lovemod.rebind_ok.desc";
 	public static String unaccepted = "lovemod.unaccepted.desc";
 	public static String divorced = "lovemod.divorced.desc";
+	public static String click_marry = "lovemod.click_marry.desc";
+	public static String click_rebind = "lovemod.click_rebind.desc";
 	
 	public CommonRing(Properties properties) {
 		super(properties);
@@ -164,9 +166,11 @@ public abstract class CommonRing extends Item {
 			if (!instance.player.getUUID().equals(holderUUID.get())) {
 				tips.add(translatable(not_my_ring).withStyle(RED));
 			}
-		}
+		} else invalidAppendHoverText(stack, context, tips, tooltipFlag);
 	}
 	
+	protected void invalidAppendHoverText(ItemStack stack, TooltipContext context, List<Component> tips, TooltipFlag tooltipFlag) {
+	}
 	
 	public static Optional<UUID> getMateUUID(ItemStack ring) {
 		return Optional.ofNullable(ring.get(MATE_UUID.get())).map(UUID::fromString);

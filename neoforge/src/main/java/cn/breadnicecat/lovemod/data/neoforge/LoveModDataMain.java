@@ -44,7 +44,6 @@ public class LoveModDataMain {
 		generator.addProvider(event.includeServer(), new ModRecipeProvider(output, lookup));
 		
 		generator.addProvider(true, new CTerminalStateProvider(STATE));
-		
 	}
 	
 	/**

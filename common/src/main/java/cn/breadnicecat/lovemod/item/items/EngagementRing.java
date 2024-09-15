@@ -3,6 +3,7 @@ package cn.breadnicecat.lovemod.item.items;
 import cn.breadnicecat.lovemod.PlayerAddition;
 import cn.breadnicecat.lovemod.item.ModItems;
 import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -11,8 +12,10 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -114,4 +117,9 @@ public class EngagementRing extends CommonRing {
 		return true;
 	}
 	
+	@Override
+	protected void invalidAppendHoverText(ItemStack stack, TooltipContext context, List<Component> tips, TooltipFlag tooltipFlag) {
+		super.invalidAppendHoverText(stack, context, tips, tooltipFlag);
+		tips.add(Component.translatable(click_marry).withStyle(YELLOW));
+	}
 }

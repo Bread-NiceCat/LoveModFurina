@@ -5,6 +5,7 @@ architectury {
     platformSetupLoomIde()
     neoForge()
 }
+archivesBaseName += "-neoforge"
 def generatedResources = new File(project(":common").getProjectDir(), "/src/main/generated")
 configurations {
     common
