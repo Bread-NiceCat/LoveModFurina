@@ -8,6 +8,18 @@ plugins {
 architectury {
     minecraft = minecraft_version
 }
+forgix {
+    group = maven_group
+    mergedJarName = "${archives_name}-${minecraft_version}-${mod_version}.jar"
+    outputDir = "build/libs/merged"
+    neoforge {
+        projectName = "neoforge"
+    }
+    fabric {
+        projectName = "fabric"
+    }
+}
+build.finalizedBy(mergeJars)
 allprojects {
     apply plugin: "java"
     apply plugin: "idea"
@@ -43,7 +55,6 @@ subprojects {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
     }
-
     tasks.withType(JavaCompile).configureEach {
         it.options.release = 21
     }
