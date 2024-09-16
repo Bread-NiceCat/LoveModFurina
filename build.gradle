@@ -8,15 +8,21 @@ plugins {
 architectury {
     minecraft = minecraft_version
 }
+String archive_file_base_name = "${archives_name}-${minecraft_version}"
+
 forgix {
     group = maven_group
-    mergedJarName = "${archives_name}-${minecraft_version}-${mod_version}.jar"
+    mergedJarName = "${archive_file_base_name}-merged-${mod_version}.jar"
     outputDir = "build/libs/merged"
+    removeDuplicate "cn.breadnicecat.lovemod"
     neoforge {
-        projectName = "neoforge"
+        jarLocation = "build/libs/${archive_file_base_name}-neoforge-${mod_version}.jar"
+        mixin "lovemod.mixin.json"
+        return null
     }
     fabric {
-        projectName = "fabric"
+        jarLocation = "build/libs/${archive_file_base_name}-fabric-${mod_version}.jar"
+        return null
     }
 }
 build.finalizedBy(mergeJars)
@@ -28,7 +34,7 @@ allprojects {
 
     version = mod_version
     group = maven_group
-    archivesBaseName = "$archives_name-$minecraft_version"
+    archivesBaseName = archive_file_base_name
 
     repositories {
         if (Locale.getDefault() == Locale.CHINA) {

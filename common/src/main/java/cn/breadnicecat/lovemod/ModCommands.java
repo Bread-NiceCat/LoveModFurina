@@ -91,11 +91,14 @@ public class ModCommands {
 					String ht = "Main Hand";
 					ItemStack hand = player.getItemInHand(InteractionHand.MAIN_HAND);
 					if (hand.isEmpty() || !(hand.getItem() instanceof CommonRing)) {
-						ht = "Off Hand";
-						hand = player.getItemInHand(InteractionHand.OFF_HAND);
-					}
-					if (!(hand.getItem() instanceof CommonRing)) {
-						source.sendSystemMessage(Component.literal("Not a Ring").withStyle(ChatFormatting.YELLOW));
+						ItemStack offhand = player.getItemInHand(InteractionHand.OFF_HAND);
+						if (!(offhand.getItem() instanceof CommonRing)) {
+							source.sendSystemMessage(Component.literal("Warning: Ring not found on hand").withStyle(ChatFormatting.YELLOW));
+							return -1;
+						} else {
+							ht = "Off Hand";
+							hand = offhand;
+						}
 					}
 					var mateName = CommonRing.getMateName(hand).orElse("null");
 					var mateUUID = CommonRing.getMateUUID(hand);
@@ -106,7 +109,7 @@ public class ModCommands {
 					source.sendSystemMessage(Component.literal("mate_name:" + mateName).withStyle(ChatFormatting.AQUA));
 					source.sendSystemMessage(Component.literal("mate_uuid:").withStyle(ChatFormatting.AQUA).append(mayOnlineByUUID(level, mateUUID.orElse(null))));
 					source.sendSystemMessage(Component.literal("holder_uuid:").withStyle(ChatFormatting.AQUA).append(mayOnlineByUUID(level, holderUUID.orElse(null))));
-					source.sendSystemMessage(Component.literal("session:").withStyle(ChatFormatting.AQUA).append(String.valueOf(session)));
+					source.sendSystemMessage(Component.literal("binding:").withStyle(ChatFormatting.AQUA).append(String.valueOf(session)));
 					source.sendSystemMessage(Component.literal("=".repeat(head.length())).withStyle(ChatFormatting.YELLOW));
 					
 					return 1;
@@ -167,7 +170,9 @@ public class ModCommands {
 	private static List<Pair<Player, Object>> getCPs(ServerLevel level) {
 		List<Pair<Player, Object>> list = new LinkedList<>();
 		Set<Player> loaded = new HashSet<>();
-		level.getPlayers(o -> !loaded.contains(o)).forEach((p) -> {
+		level.getPlayers(o -> true).forEach((p) -> {
+			if (loaded.contains(p)) return;
+			
 			Optional<UUID> mate = PlayerAddition.getMate(p);
 			if (mate.isPresent()) {
 				Player matePlayer = level.getPlayerByUUID(mate.get());
