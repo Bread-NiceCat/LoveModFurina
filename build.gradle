@@ -8,34 +8,40 @@ plugins {
 architectury {
     minecraft = minecraft_version
 }
+ext {
+    use_jbr_feature = (println(compileJava.javaCompiler.get().metadata.vendor)) == "JetBrains"
+}
 String archive_file_base_name = "${archives_name}-${minecraft_version}"
-
 forgix {
     group = maven_group
     mergedJarName = "${archive_file_base_name}-merged-${mod_version}.jar"
     outputDir = "build/libs/merged"
     removeDuplicate "cn.breadnicecat.lovemod"
     neoforge {
-        jarLocation = "build/libs/${archive_file_base_name}-neoforge-${mod_version}.jar"
-        mixin "lovemod.mixin.json"
+        println(jarLocation = "build/libs/${archive_file_base_name}-neoforge-${mod_version}.jar")
         return null
     }
     fabric {
-        jarLocation = "build/libs/${archive_file_base_name}-fabric-${mod_version}.jar"
+        println(jarLocation = "build/libs/${archive_file_base_name}-fabric-${mod_version}.jar")
         return null
     }
 }
-build.finalizedBy(mergeJars)
+mergeJars {
+    dependsOn ':fabric:build'
+    dependsOn ':neoforge:build'
+}
+build {
+    finalizedBy mergeJars
+}
+
 allprojects {
     apply plugin: "java"
     apply plugin: "idea"
     apply plugin: "architectury-plugin"
     apply plugin: "maven-publish"
-
     version = mod_version
     group = maven_group
     archivesBaseName = archive_file_base_name
-
     repositories {
         if (Locale.getDefault() == Locale.CHINA) {
             var aliyun = maven { url = "https://maven.aliyun.com/repository/public" }
@@ -55,33 +61,22 @@ subprojects {
             parchment("org.parchmentmc.data:${parchment_version}")
         }
     }
-
     java {
         withSourcesJar()
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = 21
+        sourceCompatibility = 21
     }
     tasks.withType(JavaCompile).configureEach {
+        it.options.encoding = "UTF-8"
         it.options.release = 21
     }
-
-    // Configure Maven publishing.
-    publishing {
-        publications {
-            mavenJava(MavenPublication) {
-                artifactId = base.archivesName.get()
-                from components.java
-            }
-        }
-    }
 }
-
 //declare repositories
 println("=".repeat(64))
-println("here in project $project.name")
+println("here in project ${project.name}")
 println("repo here=>")
 getRepositories().forEach { it ->
-    if (it instanceof MavenArtifactRepository) {
+    if (it instanceof UrlArtifactRepository) {
         println it.url
     } else if (it instanceof FlatDirectoryArtifactRepository) {
         println it.dirs

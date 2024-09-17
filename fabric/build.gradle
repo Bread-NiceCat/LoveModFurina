@@ -14,12 +14,14 @@ configurations {
     runtimeClasspath.extendsFrom common
     developmentFabric.extendsFrom common
 }
-
+def use_jbr_feature = rootProject.ext.use_jbr_feature
 loom {
     runs {
         client {
             vmArg "-Dmixin.debug.export=true"
-            vmArg "-XX:+AllowEnhancedClassRedefinition"
+            if (use_jbr_feature) {
+                vmArg "-XX:+AllowEnhancedClassRedefinition"
+            }
         }
     }
 }
